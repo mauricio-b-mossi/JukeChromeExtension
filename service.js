@@ -1,9 +1,58 @@
-// Hardcoding just for test purp
-const url = "https://www.youtube.com/watch?v=PHo7BHezqoo";
+// Caching url during service worker.
+let url;
+
+// Listening for changes done to url
+chrome.storage.onChanged.addListener((changes, namespace) => {
+  console.log(changes, namespace)
+  if(changes?.url){
+    url = changes.url.newValue
+  }
+})
 
 chrome.commands.onCommand.addListener((command) => {
-  console.log("Command");
+  console.log(command)
 
+  if(url){
+    togglePlayOnCommand(url)
+  } else{
+    chrome.storage.local.get(["url"]).then((res) => {
+      if(res.url){
+        url = res.url
+        togglePlayOnCommand(url)
+      } else{
+        // Message popup to display alert.
+        console.log("No url provided!")
+      }
+    })
+  }
+});
+
+function toggleTab(tabId, script = "scripts/toggle.js") {
+  console.log("Pausing Script");
+  console.log(tabId);
+  console.log("Script fired");
+  chrome.scripting.executeScript({
+    target: { tabId: tabId },
+    files: [script],
+  });
+}
+
+function playUrl(url) {
+  // THERE ARE NO AUDIBLE TABS. Query url, if url play url. else create.
+  chrome.tabs.query({ url: url }, (tabs) => {
+    if (tabs.length > 0) {
+      console.log("There is a tab url open");
+      toggleTab(tabs[0].id);
+    } else {
+      // Else create your own tab
+      chrome.tabs.create({ active: true, url: url }, (tab) => {
+        console.log("Tab has been created.");
+      });
+    }
+  });
+}
+
+function togglePlayOnCommand(url) {
   // The current must be audible. If non audible, and non is url, create url.
   chrome.tabs.query({ audible: true }, (tabs) => {
     console.log(tabs.length);
@@ -17,8 +66,7 @@ chrome.commands.onCommand.addListener((command) => {
         // Toggle not music
         toggleTab(tabs[0].id);
         // Play music
-        playUrl(url)
-
+        playUrl(url);
       } else {
         // Getting music
         chrome.storage.session.get(["otherId"]).then((res) => {
@@ -35,33 +83,7 @@ chrome.commands.onCommand.addListener((command) => {
         });
       }
     } else {
-      playUrl(url)
+      playUrl(url);
     }
   });
-});
-
-function toggleTab(tabId, script = "scripts/toggle.js") {
-  console.log("Pausing Script");
-  console.log(tabId);
-  console.log("Script fired");
-  chrome.scripting.executeScript({
-    target: { tabId: tabId },
-    files: [script],
-  });
-}
-
-function playUrl(url){
-      // THERE ARE NO AUDIBLE TABS. Query url, if url play url. else create.
-      chrome.tabs.query({ url: url }, (tabs) => {
-        if (tabs.length > 0) {
-          console.log("There is oppenheimer at tab");
-          toggleTab(tabs[0].id);
-        } else {
-          // Else create your own tab
-          chrome.tabs.create({ active: true, url: url }, (tab) => {
-            console.log("Tab has been created.");
-          });
-        }
-      });
-
 }

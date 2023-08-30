@@ -15,7 +15,7 @@
   "commands": {
     "toggle_play":{
       "suggested_keys":"Ctrl+Shift+M",
-      "description": "Toggles the video."
+      "description": "Toggle Video"
     }
   }
 }
