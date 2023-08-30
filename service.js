@@ -3,27 +3,27 @@ let url;
 
 // Listening for changes done to url
 chrome.storage.onChanged.addListener((changes, namespace) => {
-  console.log(changes, namespace)
-  if(changes?.url){
-    url = changes.url.newValue
+  console.log(changes, namespace);
+  if (changes?.url) {
+    url = changes.url.newValue;
   }
-})
+});
 
 chrome.commands.onCommand.addListener((command) => {
-  console.log(command)
+  console.log(command);
 
-  if(url){
-    togglePlayOnCommand(url)
-  } else{
+  if (url) {
+    togglePlayOnCommand(url);
+  } else {
     chrome.storage.local.get(["url"]).then((res) => {
-      if(res.url){
-        url = res.url
-        togglePlayOnCommand(url)
-      } else{
+      if (res.url) {
+        url = res.url;
+        togglePlayOnCommand(url);
+      } else {
         // Message popup to display alert.
-        console.log("No url provided!")
+        console.log("No url provided!");
       }
-    })
+    });
   }
 });
 
@@ -42,7 +42,11 @@ function playUrl(url) {
   chrome.tabs.query({ url: url }, (tabs) => {
     if (tabs.length > 0) {
       console.log("There is a tab url open");
-      toggleTab(tabs[0].id);
+      if (url.includes("spotify")) {
+        toggleTab(tabs[0].id, "scripts/toggleSpotify.js");
+      } else {
+        toggleTab(tabs[0].id);
+      }
     } else {
       // Else create your own tab
       chrome.tabs.create({ active: true, url: url }, (tab) => {
