@@ -57,36 +57,50 @@ function playUrl(url) {
 }
 
 function togglePlayOnCommand(url) {
-  // The current must be audible. If non audible, and non is url, create url.
+  // GETTING AUDIBLE TABS
   chrome.tabs.query({ audible: true }, (tabs) => {
-    console.log(tabs.length);
+    console.log("Audible Tabs")
+    console.log(tabs);
 
-    // If there are audible tabs
+    // THERE EXIST AUDIBLE TABS
     if (tabs.length > 0) {
-      // If current is NOT music STORE, ELSE toggle.
+
+      // IF CURRENT TAB IS NOT MUSIC TAB
       if (tabs[0].url != url) {
-        // Storing not music
+
+        // STORE CURRENT TAB
         chrome.storage.session.set({ otherId: tabs[0].id });
-        // Toggle not music
+
+        // TOGGLE NOT MUSIC
         toggleTab(tabs[0].id);
-        // Play music
+
+        // PLAY MUSIC
         playUrl(url);
+
       } else {
-        // Getting music
+
+        // CURRENT TAB IS MUSIC TAB, get otherTab and play it.
         chrome.storage.session.get(["otherId"]).then((res) => {
           if (res.otherId) {
             console.log(res.otherId);
-            // Toggling music.
-            toggleTab(tabs[0].id);
-            // Toggle not music.
+
+            // TOGGLE MUSIC
+            // toggleTab(tabs[0].id);
+            playUrl(url)
+
+            // PLAY NOT MUSIC
             toggleTab(res.otherId);
           } else {
-            // If there is no otherId stored Just toggle.
-            toggleTab(tabs[0].id);
+
+            // If no otherId stored, TOGGLE MUSIC
+            // toggleTab(tabs[0].id);
+            playUrl(url)
           }
         });
       }
     } else {
+
+      // CREATE MUSIC TAB.
       playUrl(url);
     }
   });
