@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Juke",
+  "version": "1.0.1",
+  "permissions" : ["scripting", "tabs", "storage"],
+  "action" : {
+    "default_popup" : "popup.html"
+  },
+  "background": {
+    "service_worker" : "service.js"
+  },
+  "host_permissions" : [
+    "*://*/*"
+  ],
+  "commands": {
+    "toggle_play":{
+      "suggested_keys":"Ctrl+Shift+M",
+      "description": "Toggles the video."
+    }
+  }
+}
