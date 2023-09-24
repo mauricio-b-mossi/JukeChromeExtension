@@ -1,9 +1,48 @@
-### Extension Structure
-As a user, pin the extension to the browser. Once pinned, when clicked a popup should 
-come up. In the popup paste the url or the youtube video you want to toggle. Set a shortcut
-to activate the extensions toggle functionality. When you press your selected shortcut for the extension,
-one of several things can happen depending on you browser's current state.
+# Juke
+## Installation
+1. **Clone the Repository:**
 
-1. If none of your tabs are audible, the extension creates a new tab with your selected url. 
-2. If your current tab is audible and it is not your selected url and the url is in another tab, pause current tab and play url. 
-3. If url is playing, pause url and play saved tab.
+   Clone this GitHub repository to your local machine using the following command:
+
+   ```sh
+   git clone https://github.com/mauricio-b-mossi/JukeChromeExtension.git
+   
+Load the Extension in Your Browser:
+
+Open your browser (Juke currently supports Chormium based browsers (i.e., Brave, Chrome)).
+Navigate to the browser's extension management page.
+Enable "Developer mode."
+Click on "Load unpacked" and select the juke-extension directory you cloned in step 1.
+Configure Keyboard Shortcut:
+
+In the extension settings, set your preferred keyboard shortcut to activate Juke.
+
+## Usage
+1. **Pin Juke Extension**:
+Pin the Juke extension to your browser's toolbar for quick access.
+
+2. **Activate Juke**:
+Click on the Juke extension icon in your toolbar. An input field will appear.
+
+3. **Enter Media URL**:
+In the input field, enter the URL of the video or playlist you want to toggle and play. Juke currently supports YouTube videos and Spotify playlists.
+
+4. **Toggle Media**:
+- If a video or music track is already playing and is not the same as the URL provided, toggling Juke will stop the current media and play the URL you provided.
+- Toggling Juke again will stop the provided URL and resume playing the previously playing media.
+- If no media is playing and you toggle Juke with the configured shortcut, the provided URL will start playing.
+
+## Features
+- **Seamless Media Toggling**: Quickly switch between video lectures, music playlists, and more without leaving your current browsing session.
+
+- **Cross-Platform Support**: Juke currently supports YouTube videos and Spotify playlists, making it versatile for various media sources.
+
+- **Customizable Shortcuts**: Set your preferred keyboard shortcut to activate Juke for a personalized experience.
+
+## Supported Platforms
+Juke currently supports the following media platforms:
+- YouTube: Play and toggle YouTube videos.
+- Spotify: Play and toggle Spotify playlists.
+
+## Motivation
+The inspiration for Juke came from the need to manage background noise while watching lectures and online content. Juke enables users to easily switch between content and background audio, enhancing concentration and productivity.
